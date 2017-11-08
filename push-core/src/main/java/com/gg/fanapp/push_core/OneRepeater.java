@@ -96,6 +96,21 @@ public class OneRepeater {
     }
 
     /**
+     * Repeater umeng notice
+     *
+     * @param context
+     * @param notifyId
+     * @param title
+     * @param content
+     * @param extraMsg
+     */
+    public static void transmitUmengNotification(Context context, int notifyId, String title
+            , String content, String extraMsg, Map<String, String> keyValue) {
+        transmit(context, OnePushAction.RECEIVE_NOTIFICATION_UMENG
+                , new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue));
+    }
+
+    /**
      * The main method to repeater information
      * @param context
      * @param action

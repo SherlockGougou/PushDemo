@@ -20,18 +20,21 @@ public abstract class BaseOnePushReceiver extends BroadcastReceiver implements I
     @Override
     public final void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (OnePushAction.RECEIVE_COMMAND_RESULT.equals(action)) {
+        if (OnePushAction.RECEIVE_COMMAND_RESULT.equals(action)) {// 收到注册等相关的SDK初始化消息
             OnePushCommand onePushCommand = TransmitDataManager.parsePushData(intent);
             onCommandResult(context, onePushCommand);
-        } else if (OnePushAction.RECEIVE_NOTIFICATION.equals(action)) {
+        } else if (OnePushAction.RECEIVE_NOTIFICATION.equals(action)) {// 收到通知栏消息（包含下面的友盟的通知栏消息）
             OnePushMsg onePushMsg = TransmitDataManager.parsePushData(intent);
             onReceiveNotification(context, onePushMsg);
-        } else if (OnePushAction.RECEIVE_NOTIFICATION_CLICK.equals(action)) {
+        } else if (OnePushAction.RECEIVE_NOTIFICATION_CLICK.equals(action)) {// 收到通知栏点击事件
             OnePushMsg onePushMsg = TransmitDataManager.parsePushData(intent);
             onReceiveNotificationClick(context, onePushMsg);
-        } else if (OnePushAction.RECEIVE_MESSAGE.equals(action)) {
+        } else if (OnePushAction.RECEIVE_MESSAGE.equals(action)) {// 收到透传消息
             OnePushMsg onePushMsg = TransmitDataManager.parsePushData(intent);
             onReceiveMessage(context, onePushMsg);
+        } else if (OnePushAction.RECEIVE_NOTIFICATION_UMENG.equals(action)) {// 收到友盟的通知栏消息
+            OnePushMsg onePushMsg = TransmitDataManager.parsePushData(intent);
+            onReceiveUmengNotification(context, onePushMsg);
         }
     }
 
@@ -39,5 +42,17 @@ public abstract class BaseOnePushReceiver extends BroadcastReceiver implements I
     public void onReceiveNotification(Context context, OnePushMsg msg) {
         //this is method is not always invoke,if you application is dead ,when you click
         //notification ,this method is not invoke,so don't do important things in this method
+    }
+
+    /**
+     * 收到友盟的推送
+     * When you receive umeng notification message
+     *
+     * @param context
+     * @param msg
+     */
+    @Override
+    public void onReceiveUmengNotification(Context context, OnePushMsg msg) {
+
     }
 }

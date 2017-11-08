@@ -53,4 +53,12 @@ public interface IPushReceiver {
      */
     void onCommandResult(Context context, OnePushCommand command);
 
+    /**
+     * 收到友盟的推送
+     * When you receive umeng notification message
+     *
+     * @param context
+     * @param msg
+     */
+    void onReceiveUmengNotification(Context context, OnePushMsg msg);
 }
