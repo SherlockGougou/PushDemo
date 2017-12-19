@@ -2,108 +2,133 @@ package com.gg.fanapp.push_huawei;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.gg.fanapp.push_core.OnePush;
+import com.gg.fanapp.push_core.OneRepeater;
 import com.gg.fanapp.push_core.cache.OnePushCache;
 import com.gg.fanapp.push_core.core.IPushClient;
-import com.huawei.android.pushagent.PushException;
-import com.huawei.android.pushagent.PushManager;
+import com.huawei.hms.api.ConnectionResult;
+import com.huawei.hms.api.HuaweiApiClient;
+import com.huawei.hms.support.api.client.ResultCallback;
+import com.huawei.hms.support.api.push.HuaweiPush;
+import com.huawei.hms.support.api.push.TokenResult;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-/** Created by pyt on 2017/5/15. */
+/**
+ * Created by pyt on 2017/5/15.
+ */
 public class HuaweiPushClient implements IPushClient {
 
-    private static final String TAG = "HuaweiPushClient";
+	private static final String TAG = "HuaweiPushClient";
 
-    private Context mContext;
-    private Map<String, String> tags;
+	private Context mContext;
+	private HuaweiApiClient huaweiApiClient;
 
-    @Override
-    public void initContext(Context context) {
-        this.mContext = context.getApplicationContext();
-    }
+	@Override
+	public void initContext(Context context) {
+		this.mContext = context.getApplicationContext();
+		huaweiApiClient = new HuaweiApiClient.Builder(context).addApi(HuaweiPush.PUSH_API)
+				.addConnectionCallbacks(new HuaweiApiClient.ConnectionCallbacks() {
+					@Override
+					public void onConnected() {
+						//华为移动服务client连接成功，在这边处理业务自己的事件
+						getToken();
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								HuaweiPush.HuaweiPushApi.enableReceiveNormalMsg(huaweiApiClient,
+										true);
+								HuaweiPush.HuaweiPushApi.enableReceiveNotifyMsg(huaweiApiClient,
+										true);
+							}
+						}).start();
+					}
 
-    @Override
-    public void register() {
-        PushManager.requestToken(mContext);
-        PushManager.enableReceiveNotifyMsg(mContext, true);
-        PushManager.enableReceiveNormalMsg(mContext, true);
-        Log.d(TAG, "register: ");
-    }
+					@Override
+					public void onConnectionSuspended(int i) {
+						if (huaweiApiClient != null) {
+							huaweiApiClient.connect();
+						}
+					}
+				})
+				.addOnConnectionFailedListener(new HuaweiApiClient.OnConnectionFailedListener() {
+					@Override
+					public void onConnectionFailed(ConnectionResult connectionResult) {
+						OneRepeater.transmitCommandResult(HuaweiPushClient.this.mContext, OnePush
+										.TYPE_REGISTER,
+								OnePush.RESULT_ERROR, null, String.valueOf(connectionResult
+										.getErrorCode()), null);
+					}
+				})
+				.build();
+	}
 
-    @Override
-    public void unRegister() {
-        // 很奇怪的问题，就是在EMUI5.0上，就算调用取消注册token的方法，服务端任然能够通过token发送通知，fuck。
-        // EMUI3.0 和EMUI4.0 没有手机测试不了
-        String token = OnePushCache.getToken(mContext);
-        if (!TextUtils.isEmpty(token)) {
-            PushManager.deregisterToken(mContext, token);
-            PushManager.enableReceiveNotifyMsg(mContext, false);
-            PushManager.enableReceiveNormalMsg(mContext, false);
-            PushManager.deleteTags(
-                    mContext, Arrays.asList(PushManager.getTags(mContext).keySet().toArray()));
-            OnePushCache.delToken(mContext);
-        }
-    }
+	@Override
+	public void register() {
+		if (!huaweiApiClient.isConnected()) {
+			huaweiApiClient.connect();
+		}
+		getToken();
+	}
 
-    @Override
-    public void bindAlias(String alias) {
-        // hua wei push is not support bind account
-    }
+	@Override
+	public void unRegister() {
+		//        huaweiApiClient.disconnect();
+		final String token = OnePushCache.getToken(mContext);
+		if (!TextUtils.isEmpty(token)) {
+			new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					HuaweiPush.HuaweiPushApi.deleteToken(huaweiApiClient, token);
+					HuaweiPush.HuaweiPushApi.enableReceiveNormalMsg(huaweiApiClient, false);
+					HuaweiPush.HuaweiPushApi.enableReceiveNotifyMsg(huaweiApiClient, false);
+				}
+			}.start();
+		}
+	}
 
-    @Override
-    public void unBindAlias(String alias) {
-        // hua wei push is not support unbind account
-    }
+	private void getToken() {
+		HuaweiPush.HuaweiPushApi.getToken(huaweiApiClient)
+				.setResultCallback(new ResultCallback<TokenResult>() {
+					@Override
+					public void onResult(TokenResult tokenResult) {
+						if (tokenResult.getTokenRes() != null && !TextUtils.isEmpty(
+								tokenResult.getTokenRes().getToken())) {
+							OneRepeater.transmitCommandResult(HuaweiPushClient.this.mContext,
+									OnePush.TYPE_REGISTER,
+									OnePush.RESULT_OK, tokenResult.getTokenRes().getToken(), null,
+									null);
+						}
+					}
+				});
+	}
 
-    @Override
-    public void addTag(String tag) {
-        if (TextUtils.isEmpty(tag)) {
-            return;
-        }
-        HashMap<String, String> tagsMap = new HashMap<>(1);
-        tagsMap.put(tag, tag);
-        try {
-            PushManager.setTags(mContext, tagsMap);
-        } catch (PushException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void bindAlias(String alias) {
 
-    @Override
-    public void deleteTag(String tag) {
-        if (TextUtils.isEmpty(tag)) {
-            return;
-        }
-        try {
-            PushManager.deleteTags(mContext, Collections.singletonList(tag));
-        } catch (PushException e) {
-            e.printStackTrace();
-        }
-    }
+	}
 
-    @Override
-    public void resetTag() {
-        getTagList();
-        if (null != tags && !tags.isEmpty()) {
-            for (Map.Entry<String, String> mapEntry : tags.entrySet()) {
-                String value = mapEntry.getValue();
-                deleteTag(value);
-            }
-        }
-    }
+	@Override
+	public void unBindAlias(String alias) {
 
-    @Override
-    public void getTagList() {
-        try {
-            this.tags = PushManager.getTags(mContext);
-        } catch (PushException e) {
-            e.printStackTrace();
-            this.tags = null;
-        }
-    }
+	}
+
+	@Override
+	public void addTag(String tag) {
+	}
+
+	@Override
+	public void resetTag() {
+
+	}
+
+	@Override
+	public void getTagList() {
+
+	}
+
+	@Override
+	public void deleteTag(String tag) {
+
+	}
 }

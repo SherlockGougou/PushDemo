@@ -25,5 +25,6 @@ android {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    provided 'com.huawei.android.hms:push:2.5.2.300'
     provided project(':push-core')
 }
