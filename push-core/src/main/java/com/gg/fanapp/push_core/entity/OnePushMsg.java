@@ -10,7 +10,7 @@ import java.util.Map;
  * Message entity class
  * Created by pyt on 2017/5/10.
  */
-public class OnePushMsg implements Parcelable{
+public class OnePushMsg implements Parcelable {
 
     private int notifyId;
 
@@ -23,14 +23,26 @@ public class OnePushMsg implements Parcelable{
     private String extraMsg;
     //对应所谓的键值对(初始化值，防止序列化出错)
     private Map<String, String> keyValue;
+    // 收到通知的时间戳
+    private long time;
 
-    public OnePushMsg(int notifyId, String title, String content, String msg, String extraMsg,Map<String,String> keyValue) {
+    public OnePushMsg(int notifyId, String title, String content, String msg, String extraMsg,
+        Map<String, String> keyValue, long time) {
         this.notifyId = notifyId;
         this.title = title;
         this.content = content;
         this.msg = msg;
         this.extraMsg = extraMsg;
         this.keyValue = keyValue;
+        this.time = time;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public int getNotifyId() {
@@ -81,14 +93,11 @@ public class OnePushMsg implements Parcelable{
         this.keyValue = keyValue;
     }
 
-
-    @Override
-    public int describeContents() {
+    @Override public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.notifyId);
         dest.writeString(this.title);
         dest.writeString(this.content);
@@ -101,7 +110,7 @@ public class OnePushMsg implements Parcelable{
                 dest.writeString(entry.getValue());
             }
         }
-
+        dest.writeLong(this.time);
     }
 
     protected OnePushMsg(Parcel in) {
@@ -117,29 +126,39 @@ public class OnePushMsg implements Parcelable{
             String value = in.readString();
             this.keyValue.put(key, value);
         }
+        this.time = in.readLong();
     }
 
     public static final Creator<OnePushMsg> CREATOR = new Creator<OnePushMsg>() {
-        @Override
-        public OnePushMsg createFromParcel(Parcel source) {
+        @Override public OnePushMsg createFromParcel(Parcel source) {
             return new OnePushMsg(source);
         }
 
-        @Override
-        public OnePushMsg[] newArray(int size) {
+        @Override public OnePushMsg[] newArray(int size) {
             return new OnePushMsg[size];
         }
     };
 
-    @Override
-    public String toString() {
-        return "OnePushMsg{" +
-                "notifyId=" + notifyId +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", msg='" + msg + '\'' +
-                ", extraMsg='" + extraMsg + '\'' +
-                ", keyValue=" + keyValue +
-                '}';
+    @Override public String toString() {
+        return "OnePushMsg{"
+            + "notifyId="
+            + notifyId
+            + ", title='"
+            + title
+            + '\''
+            + ", content='"
+            + content
+            + '\''
+            + ", msg='"
+            + msg
+            + '\''
+            + ", extraMsg='"
+            + extraMsg
+            + '\''
+            + ", keyValue="
+            + keyValue
+            + ", time="
+            + time
+            + '}';
     }
 }

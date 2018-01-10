@@ -28,10 +28,11 @@ public class OneRepeater {
     private static final String TAG = "OneRepeater";
 
     /**
+     * 命令消息
      * Repeater instructions operating results
-     * @param context
      *
-     * @param type
+     * @param extraMsg 额外信息
+     * @param error 错误信息
      * @see OnePush#TYPE_ADD_TAG
      * @see OnePush#TYPE_DEL_TAG
      * @see OnePush#TYPE_AND_OR_DEL_TAG
@@ -39,85 +40,70 @@ public class OneRepeater {
      * @see OnePush#TYPE_UNREGISTER
      * @see OnePush#TYPE_BIND_ALIAS
      * @see OnePush#TYPE_UNBIND_ALIAS
-     *
-     * @param resultCode
      * @see OnePush#RESULT_ERROR
      * @see OnePush#RESULT_OK
-     *
-     * @param extraMsg 额外信息
-     * @param error 错误信息
      */
-    public static void transmitCommandResult(Context context, int type, int resultCode,String token
-            , String extraMsg, String error){
+    public static void transmitCommandResult(Context context, int type, int resultCode,
+        String token, String extraMsg, String error) {
         Log.d(TAG, "transmitCommandResult: " + token);
-        transmit(context, OnePushAction.RECEIVE_COMMAND_RESULT
-                , new OnePushCommand(type, resultCode, token, extraMsg, error));
+        transmit(context, OnePushAction.RECEIVE_COMMAND_RESULT,
+            new OnePushCommand(type, resultCode, token, extraMsg, error));
     }
 
     /**
+     * 透传消息
      * Repeater passthrough message
-     * @param context
-     * @param msg
-     * @param extraMsg
      */
-    public static void transmitMessage(Context context, String msg
-            , String extraMsg, Map<String,String> keyValue){
-        transmit(context, OnePushAction.RECEIVE_MESSAGE
-                , new OnePushMsg(0, null, null, msg, extraMsg,keyValue));
+    public static void transmitMessage(Context context, String msg, String extraMsg,
+        Map<String, String> keyValue) {
+        transmit(context, OnePushAction.RECEIVE_MESSAGE,
+            new OnePushMsg(0, null, null, msg, extraMsg, keyValue, System.currentTimeMillis()));
     }
 
     /**
+     * 通知栏点击消息
      * Repeater the notification bar click event
-     * @param context
-     * @param notifyId
-     * @param title
-     * @param content
-     * @param extraMsg
      */
-    public static void transmitNotificationClick(Context context,int notifyId,String title
-            ,String content,String extraMsg,Map<String,String> keyValue){
-        transmit(context, OnePushAction.RECEIVE_NOTIFICATION_CLICK
-                , new OnePushMsg(notifyId, title, content, null, extraMsg,keyValue));
+    public static void transmitNotificationClick(Context context, int notifyId, String title,
+        String content, String extraMsg, Map<String, String> keyValue) {
+        transmit(context, OnePushAction.RECEIVE_NOTIFICATION_CLICK,
+            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue,
+                System.currentTimeMillis()));
     }
 
     /**
+     * 收到通知消息
      * Repeater notice
-     *
-     * @param context
-     * @param notifyId
-     * @param title
-     * @param content
-     * @param extraMsg
      */
-    public static void transmitNotification(Context context, int notifyId, String title
-            , String content, String extraMsg, Map<String, String> keyValue) {
-        transmit(context, OnePushAction.RECEIVE_NOTIFICATION
-                , new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue));
+    public static void transmitNotification(Context context, int notifyId, String title,
+        String content, String extraMsg, Map<String, String> keyValue) {
+        transmit(context, OnePushAction.RECEIVE_NOTIFICATION,
+            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue,
+                System.currentTimeMillis()));
     }
 
     /**
+     * 收到友盟通知消息
      * Repeater umeng notice
-     *
-     * @param context
-     * @param notifyId
-     * @param title
-     * @param content
-     * @param extraMsg
      */
-    public static void transmitUmengNotification(Context context, int notifyId, String title
-            , String content, String extraMsg, Map<String, String> keyValue) {
-        transmit(context, OnePushAction.RECEIVE_NOTIFICATION_UMENG
-                , new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue));
+    public static void transmitUmengNotification(Context context, int notifyId, String title,
+        String content, String extraMsg, Map<String, String> keyValue) {
+        transmit(context, OnePushAction.RECEIVE_NOTIFICATION_UMENG,
+            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue,
+                System.currentTimeMillis()));
     }
 
     /**
      * The main method to repeater information
-     * @param context
-     * @param action
-     * @param data
      */
     private static void transmit(Context context, String action, Parcelable data) {
-        OneLog.i(TAG, "transmit() called with: context = [" + context + "], action = [" + action + "], data = [" + data + "]");
+        OneLog.i(TAG, "transmit() called with: context = ["
+            + context
+            + "], action = ["
+            + action
+            + "], data = ["
+            + data
+            + "]");
         TransmitDataManager.sendPushData(context, action, data);
     }
 
