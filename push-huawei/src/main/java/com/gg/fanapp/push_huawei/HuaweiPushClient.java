@@ -11,7 +11,6 @@ import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.push.HuaweiPush;
 import com.huawei.hms.support.api.push.TokenResult;
-import java.util.Collections;
 
 /**
  * Created by pyt on 2017/5/15.
@@ -115,10 +114,7 @@ public class HuaweiPushClient implements IPushClient {
 
 	@Override
 	public void addTag(String tag) {
-		if (TextUtils.isEmpty(tag)) {
-			return;
-		}
-		HuaweiPush.HuaweiPushApi.setTags(huaweiApiClient, Collections.singletonMap(tag, tag));
+
 	}
 
 	@Override
@@ -133,9 +129,6 @@ public class HuaweiPushClient implements IPushClient {
 
 	@Override
 	public void deleteTag(String tag) {
-		if (TextUtils.isEmpty(tag)) {
-			return;
-		}
-		HuaweiPush.HuaweiPushApi.deleteTags(huaweiApiClient, Collections.singletonList(tag));
+
 	}
 }
