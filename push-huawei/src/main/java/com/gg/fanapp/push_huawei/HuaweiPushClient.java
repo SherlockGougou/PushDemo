@@ -2,7 +2,6 @@ package com.gg.fanapp.push_huawei;
 
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.gg.fanapp.push_core.OnePush;
 import com.gg.fanapp.push_core.OneRepeater;
 import com.gg.fanapp.push_core.cache.OnePushCache;
@@ -12,6 +11,7 @@ import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.push.HuaweiPush;
 import com.huawei.hms.support.api.push.TokenResult;
+import java.util.Collections;
 
 /**
  * Created by pyt on 2017/5/15.
@@ -66,22 +66,22 @@ public class HuaweiPushClient implements IPushClient {
 	public void register() {
 		if (!huaweiApiClient.isConnected()) {
 			huaweiApiClient.connect();
+		} else {
+			getToken();
 		}
-		getToken();
 	}
 
 	@Override
 	public void unRegister() {
-		//        huaweiApiClient.disconnect();
 		final String token = OnePushCache.getToken(mContext);
 		if (!TextUtils.isEmpty(token)) {
 			new Thread() {
 				@Override
 				public void run() {
-					super.run();
 					HuaweiPush.HuaweiPushApi.deleteToken(huaweiApiClient, token);
 					HuaweiPush.HuaweiPushApi.enableReceiveNormalMsg(huaweiApiClient, false);
 					HuaweiPush.HuaweiPushApi.enableReceiveNotifyMsg(huaweiApiClient, false);
+					huaweiApiClient.disconnect();
 				}
 			}.start();
 		}
@@ -115,6 +115,10 @@ public class HuaweiPushClient implements IPushClient {
 
 	@Override
 	public void addTag(String tag) {
+		if (TextUtils.isEmpty(tag)) {
+			return;
+		}
+		HuaweiPush.HuaweiPushApi.setTags(huaweiApiClient, Collections.singletonMap(tag, tag));
 	}
 
 	@Override
@@ -129,6 +133,9 @@ public class HuaweiPushClient implements IPushClient {
 
 	@Override
 	public void deleteTag(String tag) {
-
+		if (TextUtils.isEmpty(tag)) {
+			return;
+		}
+		HuaweiPush.HuaweiPushApi.deleteTags(huaweiApiClient, Collections.singletonList(tag));
 	}
 }
