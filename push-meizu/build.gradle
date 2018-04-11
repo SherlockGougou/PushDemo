@@ -25,5 +25,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':push-core')
     // 魅族推送SDK
-    compile 'com.meizu.flyme.internet:push-internal-publish:3.3.+@aar'
+    compile 'com.meizu.flyme.internet:push-internal:3.6.+@aar'
 }

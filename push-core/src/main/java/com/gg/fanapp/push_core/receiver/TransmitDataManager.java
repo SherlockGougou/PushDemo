@@ -11,31 +11,23 @@ import android.os.Parcelable;
 
 public class TransmitDataManager {
 
-    //The inside of the Intent of push message tag
-    private static final String INTENT_DATA_PUSH = "one_push_data";
+	//The inside of the Intent of push message tag
+	private static final String INTENT_DATA_PUSH = "one_push_data";
 
-    /**
-     * Send push data (through radio form to forward)
-     *
-     * @param context
-     * @param action
-     * @param data
-     */
-    public static void sendPushData(Context context, String action, Parcelable data) {
-        Intent intent = new Intent(action);
-        intent.putExtra(INTENT_DATA_PUSH, data);
-        context.sendBroadcast(intent);
-    }
+	/**
+	 * Send push data (through radio form to forward)
+	 */
+	public static void sendPushData(Context context, String action, Parcelable data) {
+		Intent intent = new Intent(action);
+		intent.putExtra(INTENT_DATA_PUSH, data);
+		intent.addCategory(context.getPackageName());
+		context.getApplicationContext().sendBroadcast(intent);
+	}
 
-    /**
-     * Analytical push message data from the Intent
-     *
-     * @param intent
-     * @param <T>
-     * @return
-     */
-    public static <T extends Parcelable> T parsePushData(Intent intent) {
-        return intent.getParcelableExtra(INTENT_DATA_PUSH);
-    }
-
+	/**
+	 * Analytical push message data from the Intent
+	 */
+	public static <T extends Parcelable> T parsePushData(Intent intent) {
+		return intent.getParcelableExtra(INTENT_DATA_PUSH);
+	}
 }
