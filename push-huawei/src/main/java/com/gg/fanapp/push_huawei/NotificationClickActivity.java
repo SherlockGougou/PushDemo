@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.text.TextUtils;
 import com.gg.fanapp.push_core.OneRepeater;
 
 import org.json.JSONException;
@@ -41,6 +42,9 @@ public class NotificationClickActivity extends Activity {
 	 * @return
 	 */
 	private Map<String, String> json2Map(String json) {
+		if (TextUtils.isEmpty(json)) {
+			return null;
+		}
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			Map<String, String> map = new HashMap<>();
@@ -51,10 +55,9 @@ public class NotificationClickActivity extends Activity {
 				map.put(key, value);
 			}
 			return map;
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 }

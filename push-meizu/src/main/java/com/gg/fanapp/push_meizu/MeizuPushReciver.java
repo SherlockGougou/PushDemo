@@ -113,11 +113,11 @@ public class MeizuPushReciver extends MzPushMessageReceiver {
 
 	/**
 	 * json转换map
-	 *
-	 * @param json
-	 * @return
 	 */
 	private Map<String, String> json2Map(String json) {
+		if (TextUtils.isEmpty(json)) {
+			return null;
+		}
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			Map<String, String> map = new HashMap<>();
@@ -128,10 +128,9 @@ public class MeizuPushReciver extends MzPushMessageReceiver {
 				map.put(key, value);
 			}
 			return map;
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 }
