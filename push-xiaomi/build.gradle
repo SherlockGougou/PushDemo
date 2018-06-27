@@ -1,29 +1,44 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+  signingConfigs {
+    release {
+      keyAlias 'alias'
+      keyPassword '000000'
+      storeFile file('D:/GitStore/PushLibrary/common.jks')
+      storePassword '000000'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+  }
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    signingConfig signingConfigs.release
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
     }
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
+    debug {
+      signingConfig signingConfigs.release
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+  }
+  sourceSets {
+    main {
+      jniLibs.srcDirs = ['libs']
     }
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+  productFlavors {
+  }
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    provided project(':push-core')
+  implementation fileTree(include: ['*.jar'], dir: 'libs')
+  compileOnly project(':push-core')
 }
