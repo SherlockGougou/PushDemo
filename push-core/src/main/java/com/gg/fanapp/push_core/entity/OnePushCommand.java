@@ -2,7 +2,6 @@ package com.gg.fanapp.push_core.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.gg.fanapp.push_core.core.OnePushCode;
 
 

@@ -1,7 +1,6 @@
 package com.gg.fanapp.push_core.core;
 
 import android.content.Context;
-
 import com.gg.fanapp.push_core.entity.OnePushCommand;
 import com.gg.fanapp.push_core.entity.OnePushMsg;
 

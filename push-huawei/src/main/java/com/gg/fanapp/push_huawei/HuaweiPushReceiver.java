@@ -3,13 +3,11 @@ package com.gg.fanapp.push_huawei;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.gg.fanapp.push_core.OnePush;
 import com.gg.fanapp.push_core.OneRepeater;
 import com.gg.fanapp.push_core.cache.OnePushCache;
 import com.gg.fanapp.push_core.log.OneLog;
 import com.huawei.hms.support.api.push.PushReceiver;
-
 import java.nio.charset.Charset;
 
 /**

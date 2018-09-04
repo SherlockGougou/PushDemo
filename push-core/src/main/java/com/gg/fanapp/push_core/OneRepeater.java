@@ -3,19 +3,16 @@ package com.gg.fanapp.push_core;
 import android.content.Context;
 import android.os.Parcelable;
 import android.util.Log;
-
 import com.gg.fanapp.push_core.entity.OnePushCommand;
 import com.gg.fanapp.push_core.entity.OnePushMsg;
 import com.gg.fanapp.push_core.log.OneLog;
 import com.gg.fanapp.push_core.receiver.OnePushAction;
 import com.gg.fanapp.push_core.receiver.TransmitDataManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * The message the repeater

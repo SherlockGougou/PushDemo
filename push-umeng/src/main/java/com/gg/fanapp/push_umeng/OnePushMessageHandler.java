@@ -3,7 +3,6 @@ package com.gg.fanapp.push_umeng;
 import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
-
 import com.gg.fanapp.push_core.OneRepeater;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;

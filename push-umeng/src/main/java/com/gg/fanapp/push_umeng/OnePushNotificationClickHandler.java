@@ -1,7 +1,6 @@
 package com.gg.fanapp.push_umeng;
 
 import android.content.Context;
-
 import com.gg.fanapp.push_core.OneRepeater;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;

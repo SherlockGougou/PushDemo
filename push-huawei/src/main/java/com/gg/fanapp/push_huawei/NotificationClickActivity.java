@@ -3,16 +3,12 @@ package com.gg.fanapp.push_huawei;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.text.TextUtils;
 import com.gg.fanapp.push_core.OneRepeater;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.json.JSONObject;
 
 /**
  * Created by pyt on 2017/5/15.

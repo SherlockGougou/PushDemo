@@ -3,7 +3,6 @@ package com.gg.fanapp.push_core.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import com.gg.fanapp.push_core.core.IPushReceiver;
 import com.gg.fanapp.push_core.core.OnePushCode;
 import com.gg.fanapp.push_core.entity.OnePushCommand;

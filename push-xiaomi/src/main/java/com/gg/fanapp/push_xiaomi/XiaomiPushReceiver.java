@@ -2,7 +2,6 @@ package com.gg.fanapp.push_xiaomi;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.gg.fanapp.push_core.OnePush;
 import com.gg.fanapp.push_core.OneRepeater;
 import com.gg.fanapp.push_core.cache.OnePushCache;
@@ -12,7 +11,6 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
-
 import java.util.List;
 
 /**

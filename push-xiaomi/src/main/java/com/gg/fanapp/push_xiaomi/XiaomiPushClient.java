@@ -5,11 +5,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.gg.fanapp.push_core.cache.OnePushCache;
 import com.gg.fanapp.push_core.core.IPushClient;
 import com.xiaomi.mipush.sdk.MiPushClient;
-
 import java.util.List;
 
 /**

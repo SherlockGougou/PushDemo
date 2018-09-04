@@ -1,9 +1,7 @@
 package com.gg.fanapp.push_core.core;
 
 import android.app.Application;
-
 import com.gg.fanapp.push_core.log.OneLog;
-
 import java.util.Arrays;
 import java.util.List;
 
