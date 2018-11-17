@@ -6,6 +6,7 @@ import com.gg.fanapp.push_core.OnePush;
 import com.gg.fanapp.push_core.OneRepeater;
 import com.gg.fanapp.push_core.cache.OnePushCache;
 import com.gg.fanapp.push_core.core.IPushClient;
+import com.gg.fanapp.push_core.receiver.OnePushAction;
 import com.huawei.hms.api.ConnectionResult;
 import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.client.ResultCallback;

@@ -1,5 +1,6 @@
 package com.gg.fanapp.push_core.receiver;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -17,10 +18,12 @@ public class TransmitDataManager {
     /**
      * Send push data (through radio form to forward)
      */
+    @SuppressLint("WrongConstant")
     public static void sendPushData(Context context, String action, Parcelable data) {
         Intent intent = new Intent(action);
         intent.putExtra(INTENT_DATA_PUSH, data);
         intent.addCategory(context.getPackageName());
+        intent.addFlags(0x01000000);
         context.getApplicationContext().sendBroadcast(intent);
     }
 
