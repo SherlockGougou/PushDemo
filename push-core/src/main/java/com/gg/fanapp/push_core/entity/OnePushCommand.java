@@ -4,22 +4,45 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.gg.fanapp.push_core.core.OnePushCode;
 
-
 /**
  * push command entity class
  * Created by pyt on 2017/5/10.
  */
 public class OnePushCommand implements Parcelable, OnePushCode {
 
+    public static final Creator<OnePushCommand> CREATOR = new Creator<OnePushCommand>() {
+        @Override public OnePushCommand createFromParcel(Parcel source) {
+            return new OnePushCommand(source);
+        }
+
+        @Override public OnePushCommand[] newArray(int size) {
+            return new OnePushCommand[size];
+        }
+    };
     private int type;
-
     private int resultCode;
-
     private String token;
-
     private String extraMsg;
-
     private String error;
+
+    public OnePushCommand() {
+    }
+
+    public OnePushCommand(int type, int resultCode, String token, String extraMsg, String error) {
+        this.type = type;
+        this.resultCode = resultCode;
+        this.token = token;
+        this.extraMsg = extraMsg;
+        this.error = error;
+    }
+
+    protected OnePushCommand(Parcel in) {
+        this.type = in.readInt();
+        this.resultCode = in.readInt();
+        this.token = in.readString();
+        this.extraMsg = in.readString();
+        this.error = in.readString();
+    }
 
     public int getType() {
         return type;
@@ -61,61 +84,35 @@ public class OnePushCommand implements Parcelable, OnePushCode {
         this.error = error;
     }
 
-    @Override
-    public String toString() {
-        return "OnePushCommand{" +
-                "type=" + getTypeText(type) +
-                ", resultCode=" + resultCode +
-                ", token='" + token + '\'' +
-                ", extraMsg='" + extraMsg + '\'' +
-                ", error='" + error + '\'' +
-                '}';
+    @Override public String toString() {
+        return "OnePushCommand{"
+            + "type="
+            + getTypeText(type)
+            + ", resultCode="
+            + resultCode
+            + ", token='"
+            + token
+            + '\''
+            + ", extraMsg='"
+            + extraMsg
+            + '\''
+            + ", error='"
+            + error
+            + '\''
+            + '}';
     }
 
-    @Override
-    public int describeContents() {
+    @Override public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.type);
         dest.writeInt(this.resultCode);
         dest.writeString(this.token);
         dest.writeString(this.extraMsg);
         dest.writeString(this.error);
     }
-
-    public OnePushCommand() {
-    }
-
-    public OnePushCommand(int type, int resultCode, String token, String extraMsg, String error) {
-        this.type = type;
-        this.resultCode = resultCode;
-        this.token = token;
-        this.extraMsg = extraMsg;
-        this.error = error;
-    }
-
-    protected OnePushCommand(Parcel in) {
-        this.type = in.readInt();
-        this.resultCode = in.readInt();
-        this.token = in.readString();
-        this.extraMsg = in.readString();
-        this.error = in.readString();
-    }
-
-    public static final Creator<OnePushCommand> CREATOR = new Creator<OnePushCommand>() {
-        @Override
-        public OnePushCommand createFromParcel(Parcel source) {
-            return new OnePushCommand(source);
-        }
-
-        @Override
-        public OnePushCommand[] newArray(int size) {
-            return new OnePushCommand[size];
-        }
-    };
 
     private String getTypeText(int type) {
         String typeText = null;
@@ -144,7 +141,5 @@ public class OnePushCommand implements Parcelable, OnePushCode {
                 break;
         }
         return typeText;
-
     }
-
 }

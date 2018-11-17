@@ -11,12 +11,18 @@ import java.util.Map;
  */
 public class OnePushMsg implements Parcelable {
 
+    public static final Creator<OnePushMsg> CREATOR = new Creator<OnePushMsg>() {
+        @Override public OnePushMsg createFromParcel(Parcel source) {
+            return new OnePushMsg(source);
+        }
+
+        @Override public OnePushMsg[] newArray(int size) {
+            return new OnePushMsg[size];
+        }
+    };
     private int notifyId;
-
     private String title;
-
     private String content;
-
     private String msg;
     //额外消息（例如小米推送里面的传输数据）
     private String extraMsg;
@@ -34,6 +40,22 @@ public class OnePushMsg implements Parcelable {
         this.extraMsg = extraMsg;
         this.keyValue = keyValue;
         this.time = time;
+    }
+
+    protected OnePushMsg(Parcel in) {
+        this.notifyId = in.readInt();
+        this.title = in.readString();
+        this.content = in.readString();
+        this.msg = in.readString();
+        this.extraMsg = in.readString();
+        int keyValueSize = in.readInt();
+        this.keyValue = new HashMap<String, String>(keyValueSize);
+        for (int i = 0; i < keyValueSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.keyValue.put(key, value);
+        }
+        this.time = in.readLong();
     }
 
     public long getTime() {
@@ -111,32 +133,6 @@ public class OnePushMsg implements Parcelable {
         }
         dest.writeLong(this.time);
     }
-
-    protected OnePushMsg(Parcel in) {
-        this.notifyId = in.readInt();
-        this.title = in.readString();
-        this.content = in.readString();
-        this.msg = in.readString();
-        this.extraMsg = in.readString();
-        int keyValueSize = in.readInt();
-        this.keyValue = new HashMap<String, String>(keyValueSize);
-        for (int i = 0; i < keyValueSize; i++) {
-            String key = in.readString();
-            String value = in.readString();
-            this.keyValue.put(key, value);
-        }
-        this.time = in.readLong();
-    }
-
-    public static final Creator<OnePushMsg> CREATOR = new Creator<OnePushMsg>() {
-        @Override public OnePushMsg createFromParcel(Parcel source) {
-            return new OnePushMsg(source);
-        }
-
-        @Override public OnePushMsg[] newArray(int size) {
-            return new OnePushMsg[size];
-        }
-    };
 
     @Override public String toString() {
         return "OnePushMsg{"

@@ -14,7 +14,7 @@ public interface OnePushCode {
 
     int TYPE_REGISTER = 2021;
 
-    int TYPE_UNREGISTER =2022;
+    int TYPE_UNREGISTER = 2022;
 
     int TYPE_ADD_TAG = 2023;
 
@@ -25,5 +25,4 @@ public interface OnePushCode {
     int TYPE_UNBIND_ALIAS = 2026;
 
     int TYPE_AND_OR_DEL_TAG = 2027;
-
 }

@@ -11,8 +11,6 @@ import com.gg.fanapp.push_core.log.OneLog;
 public class OnePush implements OnePushCode {
     /**
      * current debug statue
-     *
-     * @param isDebug
      */
     public static void setDebug(boolean isDebug) {
         OneLog.setDebug(isDebug);

@@ -12,17 +12,15 @@ import com.umeng.message.entity.UMessage;
  */
 public class OnePushMessageHandler extends UmengMessageHandler {
 
-	@Override
-	public void dealWithCustomMessage(Context context, UMessage uMessage) {
-		Log.d("dealWithCustomMessage", "--->dealWithCustomMessage");
-		OneRepeater.transmitMessage(context, uMessage.custom, null, uMessage.extra);
-	}
+    @Override public void dealWithCustomMessage(Context context, UMessage uMessage) {
+        Log.d("dealWithCustomMessage", "--->dealWithCustomMessage");
+        OneRepeater.transmitMessage(context, uMessage.custom, null, uMessage.extra);
+    }
 
-	@Override
-	public Notification getNotification(Context context, UMessage uMessage) {
-		Log.d("getNotification", "uMessage: " + uMessage.extra.toString());
-		OneRepeater.transmitUmengNotification(context, 0, uMessage.title, uMessage.custom,
-				uMessage.extra.toString(), uMessage.extra);
-		return super.getNotification(context, uMessage);
-	}
+    @Override public Notification getNotification(Context context, UMessage uMessage) {
+        Log.d("getNotification", "uMessage: " + uMessage.extra.toString());
+        OneRepeater.transmitUmengNotification(context, 0, uMessage.title, uMessage.custom, uMessage.extra.toString(),
+            uMessage.extra);
+        return super.getNotification(context, uMessage);
+    }
 }

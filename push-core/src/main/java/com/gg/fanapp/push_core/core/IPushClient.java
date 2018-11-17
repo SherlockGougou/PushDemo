@@ -11,23 +11,18 @@ public interface IPushClient {
 
     /**
      * The Context object initialization time passed, the user message push registered to use
-     * @param context
      */
     void initContext(Context context);
 
     /**
      * Registered push
-     *
      */
     void register();
 
-
     /**
      * Cancel the registration of push
-     *
      */
     void unRegister();
-
 
     /**
      * Binding alias
@@ -36,7 +31,6 @@ public interface IPushClient {
      */
     void bindAlias(String alias);
 
-
     /**
      * Binding alias
      *
@@ -44,19 +38,17 @@ public interface IPushClient {
      */
     void unBindAlias(String alias);
 
-
     /**
      * Set up the tag
      *
-     * @param tag   Tag
+     * @param tag Tag
      */
     void addTag(String tag);
-
 
     /**
      * Delete up the tag
      *
-     * @param tag   Tag
+     * @param tag Tag
      */
     void deleteTag(String tag);
 

@@ -8,7 +8,6 @@ import com.gg.fanapp.push_core.core.OnePushCode;
 import com.gg.fanapp.push_core.entity.OnePushCommand;
 import com.gg.fanapp.push_core.entity.OnePushMsg;
 
-
 /**
  * Finally unified message push processing Receiver
  * Created by pyt on 2017/5/10.
@@ -16,8 +15,7 @@ import com.gg.fanapp.push_core.entity.OnePushMsg;
 
 public abstract class BaseOnePushReceiver extends BroadcastReceiver implements IPushReceiver, OnePushCode {
 
-    @Override
-    public final void onReceive(Context context, Intent intent) {
+    @Override public final void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (OnePushAction.RECEIVE_COMMAND_RESULT.equals(action)) {// 收到注册等相关的SDK初始化消息
             OnePushCommand onePushCommand = TransmitDataManager.parsePushData(intent);
@@ -37,8 +35,7 @@ public abstract class BaseOnePushReceiver extends BroadcastReceiver implements I
         }
     }
 
-    @Override
-    public void onReceiveNotification(Context context, OnePushMsg msg) {
+    @Override public void onReceiveNotification(Context context, OnePushMsg msg) {
         //this is method is not always invoke,if you application is dead ,when you click
         //notification ,this method is not invoke,so don't do important things in this method
     }
@@ -46,12 +43,8 @@ public abstract class BaseOnePushReceiver extends BroadcastReceiver implements I
     /**
      * 收到友盟的推送
      * When you receive umeng notification message
-     *
-     * @param context
-     * @param msg
      */
-    @Override
-    public void onReceiveUmengNotification(Context context, OnePushMsg msg) {
+    @Override public void onReceiveUmengNotification(Context context, OnePushMsg msg) {
 
     }
 }

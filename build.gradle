@@ -29,7 +29,7 @@ task clean(type: Delete) {
 ext {
     // SDK And Tools
     minSdkVersion = 14
-    targetSdkVersion = 22
+    targetSdkVersion = 27
     compileSdkVersion = 27 // 这个版本号必须和 supportLibraryVersion 的大版本号保持一致
     buildToolsVersion = '27.0.3' // 这个和compileSdkVersion、supportLibraryVersion都无关
 

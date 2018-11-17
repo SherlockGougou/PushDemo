@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gg.fanapp.push_meizu">
 
-  <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"></uses-permission>
+  <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"/>
   <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE"/>
 
   <permission
@@ -32,7 +32,7 @@
         <action android:name="com.meizu.c2dm.intent.REGISTRATION"/>
         <action android:name="com.meizu.c2dm.intent.RECEIVE"/>
 
-        <category android:name="com.fan.app"></category>
+        <category android:name="com.fan.app"/>
       </intent-filter>
     </receiver>
   </application>

@@ -10,8 +10,8 @@ import com.umeng.message.entity.UMessage;
  */
 public class OnePushNotificationClickHandler extends UmengNotificationClickHandler {
 
-	@Override
-	public void dealWithCustomAction(Context context, UMessage uMessage) {
-		OneRepeater.transmitNotificationClick(context, 0, uMessage.title, uMessage.text, uMessage.custom, uMessage.extra);
-	}
+    @Override public void dealWithCustomAction(Context context, UMessage uMessage) {
+        OneRepeater.transmitNotificationClick(context, 0, uMessage.title, uMessage.text, uMessage.custom,
+            uMessage.extra);
+    }
 }

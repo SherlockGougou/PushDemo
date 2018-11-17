@@ -20,12 +20,11 @@ public class OnePushContext {
     private static final String TAG = "OnePushContext";
     private IPushClient mIPushClient;
 
-    private OnePushContext() {}
+    private OnePushContext() {
+    }
 
     /**
      * Using the simple interest
-     *
-     * @return
      */
     public static OnePushContext getInstance() {
         return Single.sInstance;
@@ -45,7 +44,7 @@ public class OnePushContext {
                 iPushClient.initContext(application);
             } else {
                 throw new IllegalArgumentException(
-                        metaPlatformClassName + "is not implements " + IPushClient.class.getName());
+                    metaPlatformClassName + "is not implements " + IPushClient.class.getName());
             }
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("can not find class " + metaPlatformClassName);

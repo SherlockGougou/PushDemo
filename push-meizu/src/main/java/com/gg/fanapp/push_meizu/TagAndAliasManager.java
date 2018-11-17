@@ -11,32 +11,32 @@ import java.util.List;
  * description:
  */
 public class TagAndAliasManager {
-	private static class SingleHolder {
-		private static final TagAndAliasManager instance = new TagAndAliasManager();
-	}
+    //别名
+    private String alias = "";
+    //标签
+    private List<SubTagsStatus.Tag> tagList;
 
-	//别名
-	private String alias = "";
-	//标签
-	private List<SubTagsStatus.Tag> tagList;
+    public static TagAndAliasManager getInstance() {
+        return SingleHolder.instance;
+    }
 
-	public static TagAndAliasManager getInstance() {
-		return SingleHolder.instance;
-	}
+    public String getAlias() {
+        return alias;
+    }
 
-	public String getAlias() {
-		return alias;
-	}
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
-	public List<SubTagsStatus.Tag> getTagList() {
-		return tagList;
-	}
+    public List<SubTagsStatus.Tag> getTagList() {
+        return tagList;
+    }
 
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
+    public void setTagList(List<SubTagsStatus.Tag> tagList) {
+        this.tagList = tagList;
+    }
 
-	public void setTagList(List<SubTagsStatus.Tag> tagList) {
-		this.tagList = tagList;
-	}
+    private static class SingleHolder {
+        private static final TagAndAliasManager instance = new TagAndAliasManager();
+    }
 }

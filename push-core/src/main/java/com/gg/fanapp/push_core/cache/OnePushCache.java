@@ -14,13 +14,11 @@ public class OnePushCache {
     private static final String FILE_ONE_PUSH_CACHE = "share_name";
     private static final String KEY_TOKEN = "one_push_token";
     private static final String KEY_PLATFORM = "one_push_platform";
-
+    private static final String TAG = "OnePushCache";
     public static String PLATFORM_HUAWEI = "huawei";
     public static String PLATFORM_XIAOMI = "xiaomi";
     public static String PLATFORM_MEIZU = "meizu";
     public static String PLATFORM_OTHER = "other";
-
-    private static final String TAG = "OnePushCache";
 
     public static void putToken(Context context, String token) {
         Log.d(TAG, "putToken: " + token);

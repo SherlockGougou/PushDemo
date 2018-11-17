@@ -12,18 +12,17 @@ public class OneLog {
 
     public static void i(String tag, String log) {
         if (sDebug) {
-            Log.i(tag,log);
+            Log.i(tag, log);
         }
     }
 
     public static void e(String tag, String log) {
         if (sDebug) {
-            Log.e(tag,log);
+            Log.e(tag, log);
         }
     }
 
     public static void setDebug(boolean isDebug) {
         sDebug = isDebug;
     }
-
 }

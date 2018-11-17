@@ -27,149 +27,144 @@ import java.util.List;
  */
 public class XiaomiPushReceiver extends PushMessageReceiver {
 
-	private static final String TAG = "XiaomiPushReceiver";
+    private static final String TAG = "XiaomiPushReceiver";
 
-	private String mRegId;
-	private String mTopic;
-	private String mAlias;
-	private String mAccount;
-	private String mStartTime;
-	private String mEndTime;
+    private String mRegId;
+    private String mTopic;
+    private String mAlias;
+    private String mAccount;
+    private String mStartTime;
+    private String mEndTime;
 
-	@Override
-	public void onReceivePassThroughMessage(Context context, MiPushMessage message) {
-		OneLog.i(TAG, "onReceivePassThroughMessage() called with: context = [" + context + "], message = [" + message + "]");
-		OneRepeater.transmitMessage(context, message.getContent(), message.getDescription(), message.getExtra());
-	}
+    @Override public void onReceivePassThroughMessage(Context context, MiPushMessage message) {
+        OneLog.i(TAG,
+            "onReceivePassThroughMessage() called with: context = [" + context + "], message = [" + message + "]");
+        OneRepeater.transmitMessage(context, message.getContent(), message.getDescription(), message.getExtra());
+    }
 
-	@Override
-	public void onNotificationMessageClicked(Context context, MiPushMessage message) {
-		OneLog.i(TAG, "onNotificationMessageClicked() called with: context = [" + context + "], message = [" + message
-                + "]");
-		// 这个动作可以在activity的onResume也能监听，请看第3点相关内容
-		OneRepeater.transmitNotificationClick(context, message.getNotifyId(), message.getTitle(), message
-                .getDescription(), message.getContent(), message.getExtra());
-	}
+    @Override public void onNotificationMessageClicked(Context context, MiPushMessage message) {
+        OneLog.i(TAG,
+            "onNotificationMessageClicked() called with: context = [" + context + "], message = [" + message + "]");
+        // 这个动作可以在activity的onResume也能监听，请看第3点相关内容
+        OneRepeater.transmitNotificationClick(context, message.getNotifyId(), message.getTitle(),
+            message.getDescription(), message.getContent(), message.getExtra());
+    }
 
-	@Override
-	public void onNotificationMessageArrived(Context context, MiPushMessage message) {
-		OneLog.i(TAG, "onNotificationMessageArrived() called with: context = [" + context + "], message = [" + message
-                + "]");
-		OneRepeater.transmitNotification(context, message.getNotifyId(), message.getTitle(), message.getDescription(),
-                message.getContent(), message.getExtra());
-	}
+    @Override public void onNotificationMessageArrived(Context context, MiPushMessage message) {
+        OneLog.i(TAG,
+            "onNotificationMessageArrived() called with: context = [" + context + "], message = [" + message + "]");
+        OneRepeater.transmitNotification(context, message.getNotifyId(), message.getTitle(), message.getDescription(),
+            message.getContent(), message.getExtra());
+    }
 
-	@Override
-	public void onReceiveRegisterResult(Context context, MiPushCommandMessage message) {
+    @Override public void onReceiveRegisterResult(Context context, MiPushCommandMessage message) {
 
-		String command = message.getCommand();
-		List<String> arguments = message.getCommandArguments();
-		String cmdArg1 = ((arguments != null && arguments.size() > 0) ? arguments.get(0) : null);
-		OneRepeater.transmitCommandResult(context, OnePush.TYPE_REGISTER, MiPushClient.COMMAND_REGISTER.equals
-                (command) ? OnePush.RESULT_OK : OnePush.RESULT_ERROR, cmdArg1, null, message.getReason());
-		/**
-		 * 保存token 和 平台
-		 */
-		OnePushCache.putToken(context, cmdArg1);
-		OnePushCache.putPlatform(context, OnePushCache.PLATFORM_XIAOMI);
-		String log;
-		if (MiPushClient.COMMAND_REGISTER.equals(command)) {
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mRegId = cmdArg1;
-				log = context.getString(R.string.register_success);
-			} else {
-				log = context.getString(R.string.register_fail) + cmdArg1;
-			}
-		} else {
-			log = message.getReason();
-		}
-		Log.d(TAG, "onReceiveRegisterResult is called. " + " reason:" + log);
-	}
+        String command = message.getCommand();
+        List<String> arguments = message.getCommandArguments();
+        String cmdArg1 = ((arguments != null && arguments.size() > 0) ? arguments.get(0) : null);
+        OneRepeater.transmitCommandResult(context, OnePush.TYPE_REGISTER,
+            MiPushClient.COMMAND_REGISTER.equals(command) ? OnePush.RESULT_OK : OnePush.RESULT_ERROR, cmdArg1, null,
+            message.getReason());
+        /**
+         * 保存token 和 平台
+         */
+        OnePushCache.putToken(context, cmdArg1);
+        OnePushCache.putPlatform(context, OnePushCache.PLATFORM_XIAOMI);
+        String log;
+        if (MiPushClient.COMMAND_REGISTER.equals(command)) {
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mRegId = cmdArg1;
+                log = context.getString(R.string.register_success);
+            } else {
+                log = context.getString(R.string.register_fail) + cmdArg1;
+            }
+        } else {
+            log = message.getReason();
+        }
+        Log.d(TAG, "onReceiveRegisterResult is called. " + " reason:" + log);
+    }
 
-	@Override
-	public void onCommandResult(Context context, MiPushCommandMessage message) {
+    @Override public void onCommandResult(Context context, MiPushCommandMessage message) {
 
-		String command = message.getCommand();
-		List<String> arguments = message.getCommandArguments();
-		String cmdArg1 = ((arguments != null && arguments.size() > 0) ? arguments.get(0) : null);
-		String cmdArg2 = ((arguments != null && arguments.size() > 1) ? arguments.get(1) : null);
-		String log;
+        String command = message.getCommand();
+        List<String> arguments = message.getCommandArguments();
+        String cmdArg1 = ((arguments != null && arguments.size() > 0) ? arguments.get(0) : null);
+        String cmdArg2 = ((arguments != null && arguments.size() > 1) ? arguments.get(1) : null);
+        String log;
 
-		int commandType = -1;
-		if (MiPushClient.COMMAND_REGISTER.equals(command)) {
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mRegId = cmdArg1;
-				log = context.getString(R.string.register_success);
-			} else {
-				log = context.getString(R.string.register_fail);
-			}
-		} else if (MiPushClient.COMMAND_SET_ALIAS.equals(command)) {
-			commandType = OnePush.TYPE_BIND_ALIAS;
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mAlias = cmdArg1;
-				log = context.getString(R.string.set_alias_success, mAlias);
-			} else {
-				log = context.getString(R.string.set_alias_fail, message.getReason());
-			}
-		} else if (MiPushClient.COMMAND_UNSET_ALIAS.equals(command)) {
-			commandType = OnePush.TYPE_UNBIND_ALIAS;
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mAlias = cmdArg1;
-				log = context.getString(R.string.unset_alias_success, mAlias);
-			} else {
-				log = context.getString(R.string.unset_alias_fail, message.getReason());
-			}
-		} else if (MiPushClient.COMMAND_SET_ACCOUNT.equals(command)) {
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mAccount = cmdArg1;
-				log = context.getString(R.string.set_account_success, mAccount);
-			} else {
-				log = context.getString(R.string.set_account_fail, message.getReason());
-			}
-		} else if (MiPushClient.COMMAND_UNSET_ACCOUNT.equals(command)) {
+        int commandType = -1;
+        if (MiPushClient.COMMAND_REGISTER.equals(command)) {
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mRegId = cmdArg1;
+                log = context.getString(R.string.register_success);
+            } else {
+                log = context.getString(R.string.register_fail);
+            }
+        } else if (MiPushClient.COMMAND_SET_ALIAS.equals(command)) {
+            commandType = OnePush.TYPE_BIND_ALIAS;
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mAlias = cmdArg1;
+                log = context.getString(R.string.set_alias_success, mAlias);
+            } else {
+                log = context.getString(R.string.set_alias_fail, message.getReason());
+            }
+        } else if (MiPushClient.COMMAND_UNSET_ALIAS.equals(command)) {
+            commandType = OnePush.TYPE_UNBIND_ALIAS;
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mAlias = cmdArg1;
+                log = context.getString(R.string.unset_alias_success, mAlias);
+            } else {
+                log = context.getString(R.string.unset_alias_fail, message.getReason());
+            }
+        } else if (MiPushClient.COMMAND_SET_ACCOUNT.equals(command)) {
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mAccount = cmdArg1;
+                log = context.getString(R.string.set_account_success, mAccount);
+            } else {
+                log = context.getString(R.string.set_account_fail, message.getReason());
+            }
+        } else if (MiPushClient.COMMAND_UNSET_ACCOUNT.equals(command)) {
 
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mAccount = cmdArg1;
+                log = context.getString(R.string.unset_account_success, mAccount);
+            } else {
+                log = context.getString(R.string.unset_account_fail, message.getReason());
+            }
+        } else if (MiPushClient.COMMAND_SUBSCRIBE_TOPIC.equals(command)) {
+            commandType = OnePush.TYPE_ADD_TAG;
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mTopic = cmdArg1;
+                log = context.getString(R.string.subscribe_topic_success, mTopic);
+            } else {
+                log = context.getString(R.string.subscribe_topic_fail, message.getReason());
+            }
+        } else if (MiPushClient.COMMAND_UNSUBSCRIBE_TOPIC.equals(command)) {
+            commandType = OnePush.TYPE_DEL_TAG;
 
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mAccount = cmdArg1;
-				log = context.getString(R.string.unset_account_success, mAccount);
-			} else {
-				log = context.getString(R.string.unset_account_fail, message.getReason());
-			}
-		} else if (MiPushClient.COMMAND_SUBSCRIBE_TOPIC.equals(command)) {
-			commandType = OnePush.TYPE_ADD_TAG;
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mTopic = cmdArg1;
-				log = context.getString(R.string.subscribe_topic_success, mTopic);
-			} else {
-				log = context.getString(R.string.subscribe_topic_fail, message.getReason());
-			}
-		} else if (MiPushClient.COMMAND_UNSUBSCRIBE_TOPIC.equals(command)) {
-			commandType = OnePush.TYPE_DEL_TAG;
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mTopic = cmdArg1;
+                log = context.getString(R.string.unsubscribe_topic_success, mTopic);
+            } else {
+                log = context.getString(R.string.unsubscribe_topic_fail, message.getReason());
+            }
+        } else if (MiPushClient.COMMAND_SET_ACCEPT_TIME.equals(command)) {
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                mStartTime = cmdArg1;
+                mEndTime = cmdArg2;
+                log = context.getString(R.string.set_accept_time_success, mStartTime, mEndTime);
+            } else {
+                log = context.getString(R.string.set_accept_time_fail, message.getReason());
+            }
+        } else {
+            log = message.getReason();
+        }
 
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mTopic = cmdArg1;
-				log = context.getString(R.string.unsubscribe_topic_success, mTopic);
-			} else {
-				log = context.getString(R.string.unsubscribe_topic_fail, message.getReason());
-			}
-		} else if (MiPushClient.COMMAND_SET_ACCEPT_TIME.equals(command)) {
-			if (message.getResultCode() == ErrorCode.SUCCESS) {
-				mStartTime = cmdArg1;
-				mEndTime = cmdArg2;
-				log = context.getString(R.string.set_accept_time_success, mStartTime, mEndTime);
-			} else {
-				log = context.getString(R.string.set_accept_time_fail, message.getReason());
-			}
-		} else {
-			log = message.getReason();
-		}
-
-		if (commandType != -1) {
-			OneRepeater.transmitCommandResult(context, commandType, message.getResultCode() == ErrorCode.SUCCESS ?
-                    OnePush.RESULT_OK : OnePush.RESULT_ERROR, null, cmdArg1, message.getReason());
-		}
-		OneLog.i(TAG, "onCommandResult is called. " + message.toString() + " reason:" + log);
-	}
-
-
+        if (commandType != -1) {
+            OneRepeater.transmitCommandResult(context, commandType,
+                message.getResultCode() == ErrorCode.SUCCESS ? OnePush.RESULT_OK : OnePush.RESULT_ERROR, null, cmdArg1,
+                message.getReason());
+        }
+        OneLog.i(TAG, "onCommandResult is called. " + message.toString() + " reason:" + log);
+    }
 }

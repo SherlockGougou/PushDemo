@@ -40,8 +40,8 @@ public class OneRepeater {
      * @see OnePush#RESULT_ERROR
      * @see OnePush#RESULT_OK
      */
-    public static void transmitCommandResult(Context context, int type, int resultCode,
-        String token, String extraMsg, String error) {
+    public static void transmitCommandResult(Context context, int type, int resultCode, String token, String extraMsg,
+        String error) {
         Log.d(TAG, "transmitCommandResult: " + token);
         transmit(context, OnePushAction.RECEIVE_COMMAND_RESULT,
             new OnePushCommand(type, resultCode, token, extraMsg, error));
@@ -51,8 +51,7 @@ public class OneRepeater {
      * 透传消息
      * Repeater passthrough message
      */
-    public static void transmitMessage(Context context, String msg, String extraMsg,
-        Map<String, String> keyValue) {
+    public static void transmitMessage(Context context, String msg, String extraMsg, Map<String, String> keyValue) {
         transmit(context, OnePushAction.RECEIVE_MESSAGE,
             new OnePushMsg(0, null, null, msg, extraMsg, keyValue, System.currentTimeMillis()));
     }
@@ -61,46 +60,38 @@ public class OneRepeater {
      * 通知栏点击消息
      * Repeater the notification bar click event
      */
-    public static void transmitNotificationClick(Context context, int notifyId, String title,
-        String content, String extraMsg, Map<String, String> keyValue) {
+    public static void transmitNotificationClick(Context context, int notifyId, String title, String content,
+        String extraMsg, Map<String, String> keyValue) {
         transmit(context, OnePushAction.RECEIVE_NOTIFICATION_CLICK,
-            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue,
-                System.currentTimeMillis()));
+            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue, System.currentTimeMillis()));
     }
 
     /**
      * 收到通知消息
      * Repeater notice
      */
-    public static void transmitNotification(Context context, int notifyId, String title,
-        String content, String extraMsg, Map<String, String> keyValue) {
+    public static void transmitNotification(Context context, int notifyId, String title, String content,
+        String extraMsg, Map<String, String> keyValue) {
         transmit(context, OnePushAction.RECEIVE_NOTIFICATION,
-            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue,
-                System.currentTimeMillis()));
+            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue, System.currentTimeMillis()));
     }
 
     /**
      * 收到友盟通知消息
      * Repeater umeng notice
      */
-    public static void transmitUmengNotification(Context context, int notifyId, String title,
-        String content, String extraMsg, Map<String, String> keyValue) {
+    public static void transmitUmengNotification(Context context, int notifyId, String title, String content,
+        String extraMsg, Map<String, String> keyValue) {
         transmit(context, OnePushAction.RECEIVE_NOTIFICATION_UMENG,
-            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue,
-                System.currentTimeMillis()));
+            new OnePushMsg(notifyId, title, content, null, extraMsg, keyValue, System.currentTimeMillis()));
     }
 
     /**
      * The main method to repeater information
      */
     private static void transmit(Context context, String action, Parcelable data) {
-        OneLog.i(TAG, "transmit() called with: context = ["
-            + context
-            + "], action = ["
-            + action
-            + "], data = ["
-            + data
-            + "]");
+        OneLog.i(TAG,
+            "transmit() called with: context = [" + context + "], action = [" + action + "], data = [" + data + "]");
         TransmitDataManager.sendPushData(context, action, data);
     }
 
