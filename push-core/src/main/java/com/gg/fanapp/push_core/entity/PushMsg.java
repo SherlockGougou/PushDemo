@@ -1,25 +1,17 @@
 package com.gg.fanapp.push_core.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import java.util.HashMap;
+import com.gg.fanapp.push_core.core.OnePushCode;
 import java.util.Map;
 
 /**
- * Message entity class
- * Created by pyt on 2017/5/10.
+ * @author 工藤
+ * @email gougou@16fan.com
+ * com.gg.fanapp.push_core.entity
+ * create at 2019/1/4  11:40
+ * description:
  */
-public class OnePushMsg implements Parcelable {
+public class PushMsg extends Base implements OnePushCode {
 
-    public static final Creator<OnePushMsg> CREATOR = new Creator<OnePushMsg>() {
-        @Override public OnePushMsg createFromParcel(Parcel source) {
-            return new OnePushMsg(source);
-        }
-
-        @Override public OnePushMsg[] newArray(int size) {
-            return new OnePushMsg[size];
-        }
-    };
     private int notifyId;
     private String title;
     private String content;
@@ -31,7 +23,7 @@ public class OnePushMsg implements Parcelable {
     // 收到通知的时间戳
     private long time;
 
-    public OnePushMsg(int notifyId, String title, String content, String msg, String extraMsg,
+    public PushMsg(int notifyId, String title, String content, String msg, String extraMsg,
         Map<String, String> keyValue, long time) {
         this.notifyId = notifyId;
         this.title = title;
@@ -39,30 +31,6 @@ public class OnePushMsg implements Parcelable {
         this.msg = msg;
         this.extraMsg = extraMsg;
         this.keyValue = keyValue;
-        this.time = time;
-    }
-
-    protected OnePushMsg(Parcel in) {
-        this.notifyId = in.readInt();
-        this.title = in.readString();
-        this.content = in.readString();
-        this.msg = in.readString();
-        this.extraMsg = in.readString();
-        int keyValueSize = in.readInt();
-        this.keyValue = new HashMap<String, String>(keyValueSize);
-        for (int i = 0; i < keyValueSize; i++) {
-            String key = in.readString();
-            String value = in.readString();
-            this.keyValue.put(key, value);
-        }
-        this.time = in.readLong();
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
         this.time = time;
     }
 
@@ -114,28 +82,16 @@ public class OnePushMsg implements Parcelable {
         this.keyValue = keyValue;
     }
 
-    @Override public int describeContents() {
-        return 0;
+    public long getTime() {
+        return time;
     }
 
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.notifyId);
-        dest.writeString(this.title);
-        dest.writeString(this.content);
-        dest.writeString(this.msg);
-        dest.writeString(this.extraMsg);
-        if (keyValue != null) {
-            dest.writeInt(this.keyValue.size());
-            for (Map.Entry<String, String> entry : this.keyValue.entrySet()) {
-                dest.writeString(entry.getKey());
-                dest.writeString(entry.getValue());
-            }
-        }
-        dest.writeLong(this.time);
+    public void setTime(long time) {
+        this.time = time;
     }
 
     @Override public String toString() {
-        return "OnePushMsg{"
+        return "PushMsg{"
             + "notifyId="
             + notifyId
             + ", title='"

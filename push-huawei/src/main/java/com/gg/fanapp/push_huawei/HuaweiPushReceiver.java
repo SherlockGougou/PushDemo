@@ -9,6 +9,7 @@ import com.gg.fanapp.push_core.cache.OnePushCache;
 import com.gg.fanapp.push_core.log.OneLog;
 import com.huawei.hms.support.api.push.PushReceiver;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Created by pyt on 2017/5/15.
@@ -41,7 +42,7 @@ public class HuaweiPushReceiver extends PushReceiver {
 
     @Override public void onPushMsg(Context context, byte[] bytes, String s) {
         super.onPushMsg(context, bytes, s);
-        OneLog.i(TAG, "onPushMsg() called with: context = [" + context + "], bytes = [" + bytes + "], s = [" + s + "]");
+        OneLog.i(TAG, "huawei push data = [" + context + "], bytes = [" + Arrays.toString(bytes) + "], s = [" + s + "]");
         OneRepeater.transmitMessage(context, new String(bytes, Charset.forName("UTF-8")), null, null);
     }
 

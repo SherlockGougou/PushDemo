@@ -15,6 +15,7 @@ public class OnePushCache {
     private static final String KEY_TOKEN = "one_push_token";
     private static final String KEY_PLATFORM = "one_push_platform";
     private static final String TAG = "OnePushCache";
+
     public static String PLATFORM_HUAWEI = "huawei";
     public static String PLATFORM_XIAOMI = "xiaomi";
     public static String PLATFORM_MEIZU = "meizu";

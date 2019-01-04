@@ -24,8 +24,7 @@ public class NotificationClickActivity extends Activity {
             String content = uri.getQueryParameter("content");
             String extraMsg = uri.getQueryParameter("extraMsg");
             String keyValue = uri.getQueryParameter("keyValue");
-            OneRepeater.transmitNotificationClick(getApplicationContext(), -1, title, content, extraMsg,
-                json2Map(keyValue));
+            OneRepeater.transmitNotificationClick(getApplicationContext(), -1, title, content, extraMsg, json2Map(keyValue));
         }
         finish();
     }
